@@ -1,4 +1,4 @@
-export const host = 'http://localhost:9000';
+export const host = 'https://chatty-chatt.herokuapp.com';
 
 export const registerRoute = `${host}/api/auth/register`;
 export const loginRoute = `${host}/api/auth/login`;
