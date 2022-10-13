@@ -30,12 +30,13 @@ function SetAvatar() {
   };
 
   useEffect(() => {
+    avatarFun();
+
     async function avatarFun() {
       if(!localStorage.getItem('chatty-user')) {
         navigate('/login');
       }
     }
-    avatarFun();
   },[]);
 
   const setProfilePicture = async () => {
@@ -50,18 +51,18 @@ function SetAvatar() {
 
       // console.log(data.isSet);  //flase
 
-      if(!data.isSet) {
+      if(data.isSet) {
          user.isAvatarImageSet = true;
          user.avatarImage = data.image;
          localStorage.setItem('chatty-user',JSON.stringify(user));
          navigate('/');
-      }else{
-        toast.error('Error setting avatar. Please try again.',toastOptions);
       }
     }
   };
 
   useEffect(() => {
+    makeAvatar();
+
     async function makeAvatar() {
       let data = [];
 
@@ -80,7 +81,6 @@ function SetAvatar() {
       setLoading(false);
     }
 
-    makeAvatar();
   }, []);
 
   return (
@@ -164,7 +164,12 @@ const Container = styled.div`
 
       img {
         height: 6rem;
+
+        @media screen and (min-width: 120px) and (max-width: 480px) {
+          height: 3rem;
+        }
       }
+      
     }
     .selected {
       border: 3px solid #4e0;

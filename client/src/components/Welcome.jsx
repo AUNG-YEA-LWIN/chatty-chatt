@@ -1,13 +1,25 @@
-import React from 'react';
+import React,{ useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Robot from '../assets/robot.gif';
 
 function Welcome({currentUser}) {
+
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    usernameFun();
+  
+    async function usernameFun() {
+      setUserName(await JSON.parse(localStorage.getItem('chatty-user')).username);
+    }
+
+  },[])
+
   return (
     <Container>
         <img src={Robot} alt="robot" />
         <h1>
-            Welcome, <span>{currentUser.username}!</span>
+            Welcome, <span>{userName}!</span>
         </h1>
         <h3>
             Please select a chat to Start Message. 
@@ -21,6 +33,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    flex-wrap: no-wrap;
     gap: 1rem;
     color: white;
      img{
@@ -28,6 +41,9 @@ const Container = styled.div`
      }
      span{
         color: #4e00ff;
+     }
+     @media screen and (min-width:120px) and (max-width: 480px){
+      display: none;
      }
 `;
 

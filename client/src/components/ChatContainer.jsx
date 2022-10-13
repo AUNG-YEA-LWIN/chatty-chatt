@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ChatInput from './ChatInput';
-import Logout from './Logout';
 import axios from 'axios';
 import { getAllMessagesRoute, sendMessageRoute } from '../utils/APIRoutes';
 import { v4 as uuidv4 } from 'uuid';
@@ -48,6 +47,7 @@ function ChatContainer({ currentChat, currentUser, socket }) {
     setMessages(msgs);
   };
 
+
   useEffect(() => {
     if (socket.current) {
       socket.current.on('msg-receive', (msg) => {
@@ -80,12 +80,11 @@ function ChatContainer({ currentChat, currentUser, socket }) {
                 <h3>{currentChat.username}</h3>
               </div>
             </div>
-            <Logout />
           </div>
           <div className="chat-messages">
             {messages.map((message, index) => {
               return (
-                <div key={uuidv4()} ref={scrollRef} >
+                <div key={uuidv4()} ref={scrollRef}>
                   <div
                     className={`message ${
                       message.fromSelf ? 'sent' : 'received'
@@ -114,6 +113,13 @@ const Container = styled.div`
   overflow: hidden;
   @media screen and (min-width: 720px) and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;
+  }
+  @media screen and (min-width: 120px) and (max-width: 480px) {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    grid-template-rows: 10% 80% 10%;
+    position: absolute;
   }
 
   .chat-header {

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Logo from '../assets/logo.svg';
+import Logout from './Logout';
 
-function Contacts({ contacts, currentUser, changeChat }) {
+function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
 
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
@@ -10,12 +11,16 @@ function Contacts({ contacts, currentUser, changeChat }) {
   const [currentSelected, setCurrentSelected] = useState(undefined);
 
   useEffect(() => {
-    // console.log(contacts);
-    if (currentUser) {
-      setCurrentUserImage(currentUser.avatarImage);
-      setCurrentUserName(currentUser.username);
+    currentUserFun(); 
+
+    async function currentUserFun() {
+      const data = await JSON.parse(localStorage.getItem('chatty-user'));
+
+      setCurrentUserImage(data.avatarImage);
+      setCurrentUserName(data.username);
     }
-  }, [currentUser]);
+
+  }, []);
 
   const changeCurrentChat = (index, contact) => {
     setCurrentSelected(index);
@@ -29,6 +34,7 @@ function Contacts({ contacts, currentUser, changeChat }) {
           <div className="brand">
             <img src={Logo} alt="logo" />
             <h3>Chatty</h3>
+            <Logout />
           </div>
           <div className="contacts">
             {contacts.map((contact, index) => {
@@ -38,7 +44,7 @@ function Contacts({ contacts, currentUser, changeChat }) {
                     index === currentSelected ? 'selected' : ''
                   }`}
                   key={index}
-                  onClick={() => changeCurrentChat(index,contact)}
+                  onClick={() => changeCurrentChat(index, contact)}
                 >
                   <div className="avatar">
                     <img
@@ -79,7 +85,7 @@ const Container = styled.div`
   .brand {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     gap: 1rem;
 
     img {
@@ -89,19 +95,23 @@ const Container = styled.div`
       color: white;
       text-transform: uppercase;
     }
+    @media screen and (min-width: 120px) and (max-width: 480px) {
+      justify-content: space-around;
+    }
   }
   .contacts {
     display: flex;
     align-items: center;
     flex-direction: column;
     overflow: auto;
-    gap: 0.8rem;&::-webkit-scrollbar{
-        width: 0.2rem;
-        &-thumb{
-            background-color: #ffffff39;
-            width: 0.1rem;
-            border-radius: 1rem;
-        }
+    gap: 0.8rem;
+    &::-webkit-scrollbar {
+      width: 0.2rem;
+      &-thumb {
+        background-color: #ffffff39;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
     }
 
     .contact {
@@ -142,12 +152,12 @@ const Container = styled.div`
         height: 4rem;
         max-inline-size: 100%;
       }
-    @media screen and (min-width: 480px) and (max-width: 720px) {
-      img{
-        height: 3rem;
-        max-inline-size: 90%;
+      @media screen and (min-width: 480px) and (max-width: 720px) {
+        img {
+          height: 3rem;
+          max-inline-size: 90%;
+        }
       }
-    }
     }
     .username {
       h2 {

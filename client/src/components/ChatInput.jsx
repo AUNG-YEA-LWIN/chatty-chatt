@@ -71,6 +71,11 @@ const Container = styled.div`
     padding: 0 2rem;
     gap: 1rem;
   }
+  @media screen and (min-width: 120px) and (max-width: 480px) {
+    grid-template-columns: 15% 85%;
+    padding: 0 2rem;
+    gap: 1rem;
+  }
 
   .button-container {
     display: flex;

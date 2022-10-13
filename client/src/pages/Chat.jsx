@@ -23,6 +23,8 @@ function Chat() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    isUser();
+
     async function isUser() {
       if (!localStorage.getItem('chatty-user')) {
         navigate('/login');
@@ -32,7 +34,6 @@ function Chat() {
       }
     }
 
-    isUser();
   }, []);
 
   useEffect(() => {
@@ -45,6 +46,9 @@ function Chat() {
   },[currentUser]);
 
   useEffect(() => {
+    
+    contactFun();
+  
     async function contactFun() {
       if (currentUser) {
         if (currentUser.isAvatarImageSet) {
@@ -53,11 +57,13 @@ function Chat() {
         } else {
           navigate('/setAvatar');
         }
+      }else{
+        setIsLoaded(true);
       }
     }
 
-    contactFun();
   }, [currentUser]);
+
 
   const handleChatChange = (chat) => {
     setCurrentChat(chat);
@@ -66,13 +72,15 @@ function Chat() {
   return (
     <Container>
       <div className="container">
+      
         <Contacts
           contacts={contacts}
           currentUser={currentUser}
           changeChat={handleChatChange}
         />
-        {isLoaded && currentChat === undefined ? (
-          <Welcome currentUser={currentUser} />
+
+        {isLoaded &&  currentChat === undefined ? (
+          <Welcome />
         ) : (
           <ChatContainer currentChat={currentChat} currentUser={currentUser} socket={socket} />
         )}
@@ -90,6 +98,9 @@ const Container = styled.div`
   flex-direction: column;
   background-color: #131324;
   gap: 1rem;
+  @media screen and (min-width:120px) and (max-width: 480px){
+    display: block;
+  }
     
     .container{
       height: 85vh;
@@ -97,12 +108,22 @@ const Container = styled.div`
       background-color: #000000;
       display: grid;
       grid-template-columns: 25% 75%;
+
       @media screen and (min-width:720px) and (max-width: 1080px){
         grid-template-columns: 35% 65%;
       }
       @media screen and (min-width:480px) and (max-width: 720px){
         grid-template-columns: 40% 60%;
       }
-    }
+      @media screen and (min-width:120px) and (max-width: 480px){
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        top: 0;
+        left: 0;
+        grid-template-columns: 100%;
+        grid-template-rows: 100% 0%;
+      }
+    }  
 `;
 export default Chat;
